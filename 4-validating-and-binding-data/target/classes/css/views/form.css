@@ -1,0 +1,9 @@
+.form {
+  padding: var(--dwc-space-l);
+  margin: 0 auto;
+  overflow: auto;
+}
+
+dwc-button {
+  margin-top: var(--dwc-space-l);
+}
