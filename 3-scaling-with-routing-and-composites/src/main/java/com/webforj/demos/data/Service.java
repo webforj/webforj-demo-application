@@ -59,7 +59,7 @@ public class Service {
     ObjectMapper mapper = new ObjectMapper();
 
     try {
-      return mapper.readValue(Assets.contentOf(Assets.resolveContextUrl("context://data/customers.json")),
+      return mapper.readValue(Assets.contentOf(Assets.resolveWebServerUrl("ws://data/customers.json")),
           new TypeReference<List<Customer>>() {
           });
     } catch (IOException e) {

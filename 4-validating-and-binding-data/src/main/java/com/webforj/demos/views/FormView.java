@@ -3,8 +3,8 @@ package com.webforj.demos.views;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import com.webforj.annotation.InlineStyleSheet;
 import com.webforj.component.Composite;
+import com.webforj.annotation.StyleSheet;
 import com.webforj.component.button.Button;
 import com.webforj.component.button.ButtonTheme;
 import com.webforj.component.field.TextField;
@@ -24,7 +24,7 @@ import com.webforj.router.event.DidEnterEvent;
 import com.webforj.router.history.ParametersBag;
 import com.webforj.router.observer.DidEnterObserver;
 
-@InlineStyleSheet("context://css/views/form.css")
+@StyleSheet("ws://css/views/form.css")
 @Route("customer/:id?")
 @FrameTitle("Customer Form")
 public class FormView extends Composite<Div> implements DidEnterObserver {

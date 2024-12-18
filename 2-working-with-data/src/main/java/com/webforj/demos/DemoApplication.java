@@ -4,7 +4,7 @@ import static com.webforj.component.optiondialog.OptionDialog.showMessageDialog;
 
 import com.webforj.App;
 import com.webforj.annotation.AppTitle;
-import com.webforj.annotation.InlineStyleSheet;
+import com.webforj.annotation.StyleSheet;
 import com.webforj.component.button.Button;
 import com.webforj.component.button.ButtonTheme;
 import com.webforj.component.html.elements.Paragraph;
@@ -14,7 +14,7 @@ import com.webforj.demos.data.Service;
 import com.webforj.demos.models.Customer;
 import com.webforj.exceptions.WebforjException;
 
-@InlineStyleSheet("context://css/demoApplication.css")
+@StyleSheet("ws://css/demoApplication.css")
 @AppTitle("Demo Step 2")
 public class DemoApplication extends App {
   Paragraph demo = new Paragraph("Demo Application!");
@@ -33,7 +33,7 @@ public class DemoApplication extends App {
   }
 
   private void buildTable() {
-    table.setHeight("300px");
+    table.setHeight("294px");
     table.setWidth(1000);
 
     table.addColumn("First Name", Customer::getFirstName);

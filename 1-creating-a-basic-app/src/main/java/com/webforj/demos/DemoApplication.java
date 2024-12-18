@@ -4,14 +4,14 @@ import static com.webforj.component.optiondialog.OptionDialog.showMessageDialog;
 
 import com.webforj.App;
 import com.webforj.annotation.AppTitle;
-import com.webforj.annotation.InlineStyleSheet;
+import com.webforj.annotation.StyleSheet;
 import com.webforj.component.button.Button;
 import com.webforj.component.button.ButtonTheme;
 import com.webforj.component.html.elements.Paragraph;
 import com.webforj.component.window.Frame;
 import com.webforj.exceptions.WebforjException;
 
-@InlineStyleSheet("context://css/demoApplication.css")
+@StyleSheet("ws://css/demoApplication.css")
 @AppTitle("Demo Step 1")
 public class DemoApplication extends App {
   Paragraph demo = new Paragraph("Demo Application!");

@@ -32,7 +32,7 @@ public class DemoView extends Composite<Div> {
   }
 
   private void buildTable() {
-    table.setHeight("300px");
+    table.setHeight("294px");
 
     table.addColumn("First Name", Customer::getFirstName);
     table.addColumn("Last Name", Customer::getLastName);
