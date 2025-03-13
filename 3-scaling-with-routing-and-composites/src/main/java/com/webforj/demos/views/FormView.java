@@ -23,25 +23,53 @@ import com.webforj.router.event.DidEnterEvent;
 import com.webforj.router.history.ParametersBag;
 import com.webforj.router.observer.DidEnterObserver;
 
+/**
+ * Represents the customer form view for adding or editing a customer.
+ *
+ * This view displays a form with fields for entering customer details such as
+ * first name, last name, company, and country. It supports both adding a new
+ * customer and editing an existing one, based on URL parameters.
+ */
 @StyleSheet("ws://css/views/form.css")
 @Route("customer/:id?")
 @FrameTitle("Customer Form")
 public class FormView extends Composite<Div> implements DidEnterObserver {
-  Customer customer = new Customer();
-  Div self = getBoundComponent();
-  TextField firstName = new TextField("First Name", e -> customer.setFirstName(e.getValue()));
-  TextField lastName = new TextField("Last Name", e -> customer.setLastName(e.getValue()));
-  TextField company = new TextField("Company", e -> customer.setCompany(e.getValue()));
-  ChoiceBox country = new ChoiceBox("Country",
-      e -> customer.setCountry(Country.valueOf(e.getSelectedItem().getText())));
-  Button submit = new Button("Submit", ButtonTheme.PRIMARY);
-  Button cancel = new Button("Cancel", ButtonTheme.OUTLINED_PRIMARY, e -> Router.getCurrent().navigate(DemoView.class));
 
-  ColumnsLayout columnsLayout = new ColumnsLayout(
+  /** Customer instance representing the form data. */
+  private Customer customer = new Customer();
+
+  /** Root container for the form view. */
+  private Div self = getBoundComponent();
+
+  /** Text field for entering the first name. */
+  private TextField firstName = new TextField("First Name", e -> customer.setFirstName(e.getValue()));
+
+  /** Text field for entering the last name. */
+  private TextField lastName = new TextField("Last Name", e -> customer.setLastName(e.getValue()));
+
+  /** Text field for entering the company name. */
+  private TextField company = new TextField("Company", e -> customer.setCompany(e.getValue()));
+
+  /** Choice box for selecting the country. */
+  private ChoiceBox country = new ChoiceBox("Country",
+      e -> customer.setCountry(Country.valueOf(e.getSelectedItem().getText())));
+
+  /** Button to submit the form (adds or edits a customer). */
+  private Button submit = new Button("Submit", ButtonTheme.PRIMARY);
+
+  /** Button to cancel the form and navigate back to the demo view. */
+  private Button cancel = new Button("Cancel", ButtonTheme.OUTLINED_PRIMARY, 
+      e -> Router.getCurrent().navigate(DemoView.class));
+
+  /** Layout organizing the form fields and buttons. */
+  private ColumnsLayout columnsLayout = new ColumnsLayout(
       firstName, lastName,
       company, country,
       cancel, submit);
 
+  /**
+   * Constructs the customer form view.
+   */
   public FormView() {
     fillCountries();
 
@@ -51,6 +79,9 @@ public class FormView extends Composite<Div> implements DidEnterObserver {
     self.add(columnsLayout);
   }
 
+  /**
+   * Populates the country selection box with available countries.
+   */
   private void fillCountries() {
     ArrayList<ListItem> listCountries = new ArrayList<>();
     for (Country countryItem : Customer.Country.values()) {
@@ -59,6 +90,12 @@ public class FormView extends Composite<Div> implements DidEnterObserver {
     country.insert(listCountries);
   }
 
+  /**
+   * Handles the submission of the form based on the mode (add or edit).
+   *
+   * @param mode The mode of submission: "add" for adding a new customer, 
+   *             "edit" for updating an existing customer.
+   */
   private void submit(String mode) {
     switch (mode) {
       case "edit":
@@ -74,6 +111,15 @@ public class FormView extends Composite<Div> implements DidEnterObserver {
     Router.getCurrent().navigate(DemoView.class);
   }
 
+  /**
+   * Handles route navigation and pre-fills the form if an existing customer is being edited.
+   *
+   * If a customer ID is present in the URL parameters, the corresponding customer data
+   * is loaded into the form fields. Otherwise, the form is set up for adding a new customer.
+   *
+   * @param event      The event triggered when entering the route.
+   * @param parameters The parameters extracted from the route.
+   */
   @Override
   public void onDidEnter(DidEnterEvent event, ParametersBag parameters) {
     parameters.get("id").ifPresentOrElse(id -> {
