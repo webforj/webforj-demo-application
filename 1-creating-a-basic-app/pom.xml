@@ -6,9 +6,9 @@
 
   <groupId>com.webforj.samples</groupId>
   <artifactId>webforj-demo-application</artifactId>
-  <version>24.20</version>
+  <version>25.02</version>
   <packaging>war</packaging>
-  <name>webforj-demo-application</name>  
+  <name>webforj-demo-application</name>
   <description>A simple webforJ application</description>
   <url>https://webforj.com</url>
 
@@ -18,10 +18,12 @@
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
 
-    <webforj.version>24.20</webforj.version>
+    <webforj.version>25.02</webforj.version>
 
     <jetty.version>12.0.14</jetty.version>
     <jetty.scan>1</jetty.scan>
+    <jetty.port>8080</jetty.port>
+    <jetty.stopPort>9966</jetty.stopPort>
   </properties>
 
   <repositories>
@@ -37,16 +39,57 @@
     </repository>
   </repositories>
 
-  <dependencies>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.webforj</groupId>
+        <artifactId>webforj-bom</artifactId>
+        <version>${webforj.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>5.10.3</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+<dependencies>
     <dependency>
       <groupId>com.webforj</groupId>
       <artifactId>webforj</artifactId>
       <version>${webforj.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.webforj</groupId>
+      <artifactId>webforj-googlecharts</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>2.0.16</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.microsoft.playwright</groupId>
+      <artifactId>playwright</artifactId>
+      <version>1.49.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
-    <finalName>${project.name}</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -64,19 +107,38 @@
           </webResources>
         </configuration>
       </plugin>
+
       <plugin>
-        <groupId>org.eclipse.jetty.ee8</groupId>
-        <artifactId>jetty-ee8-maven-plugin</artifactId>
+        <groupId>org.eclipse.jetty.ee10</groupId>
+        <artifactId>jetty-ee10-maven-plugin</artifactId>
         <version>${jetty.version}</version>
         <configuration>
           <scan>${jetty.scan}</scan>
+          <stopPort>${jetty.stopPort}</stopPort>
+          <stopKey>${project.artifactId}</stopKey>
           <httpConnector>
-            <port>8080</port>
+            <port>${jetty.port}</port>
           </httpConnector>
           <webApp>
             <contextPath>/</contextPath>
           </webApp>
         </configuration>
+        <executions>
+          <execution>
+            <id>start-jetty</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>start</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>stop-jetty</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
